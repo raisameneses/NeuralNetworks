@@ -39,17 +39,25 @@ var Neuron = function(numInputs){
 
 //Multiply each input by the weight
 //Add all inputs
+//Feedforward, accumulative sum: weights * input
 Neuron.prototype.think = function(inputs){
     var sum = 0;
     for(let i = 0; i < inputs.length; i++){      
         sum += this.weight[i] * inputs[i];
     }
-    return sum; 
+    return sum;
+    //return Activate(sum)?  
+}
+
+//**** Talk to Chris about this.
+//Is this really binary? .. *Advice on the activation function 
+Neuron.prototype.Activate = function(sum){
+    //what to do in the activation function?? 
+
 }
 //Readjust weights depending on the accuracy of the prediction 
-Neuron.prototype.learn = function(input, target){
-    var direction = this.think(input);
-    var error = target - direction; 
+//Pre: error rate calculated by robot
+Neuron.prototype.learn = function(errorValue){   
     for(let i = 0; i < inputs.length; i++){      
        this.weight[i] += LEARNING_CAPACITY * error * input[i];
     }
@@ -85,20 +93,28 @@ var Robot = function(inputNum, x, y){
 Robot.prototype.findTarget = function(x, y){
    let targetPosition = new Vector(x, y, 0);
    let distance = this.distance(targetPosition); 
-   let lightIntensity =  (1/distance); //Light intensity is inversely proportional to target distance
+   let lightIntensity =  (1/distance); //Light intensity is inversely proportional to target distance if small, the robot is farther from the light, if closer to distance, 
+   //the robot is closer. 
+   //Update the weights so it gets closer to the distance 
 }
 
-//Move towards target
+//this is another option, calculate how the robot is doing based on the 
+//Position of the robot, then adjust the weights of the vector to get closer to the location of the light 
+Robot.prototype.calculateError = function(robotPosition, targetPosition){
+    var errorRate = targetPosition - robotPosition;
+    return errorRate; 
+}
+//update the variables to be able to draw them 
 Robot.prototype.updateVariables = function(){
-    
+    direction.addVector(acceleration); 
+    location.addVector(direction); 
 }
 
-Robot.prototype.applyForce = function(){
-
-}
-
+//where to go next.. ? 
 Robot.prototype.steer = function(){
 
 }
+
+
 
  
